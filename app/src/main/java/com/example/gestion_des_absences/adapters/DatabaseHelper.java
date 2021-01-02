@@ -5,10 +5,15 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
-import androidx.annotation.Nullable;
+import com.example.gestion_des_absences.classes.Student;
+
+import java.util.ArrayList;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
+    private static final String TAG = "ggghhh";
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
     }
@@ -68,11 +73,45 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return res;
     }
 
+//    public ArrayList GetStudents() {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        ArrayList<String> studentsList = new ArrayList<>();
+//        Cursor cursor = db.rawQuery("select * from students_table", null);
+//        while (cursor.moveToNext()) {
+//            studentsList.add();
+//            studentsList.add(cursor.getString(cursor.getColumnIndex("FULLNAME")));
+//            studentsList.add(cursor.getString(cursor.getColumnIndex("STATUS")));
+//
+//        }
+//        return studentsList;
+//    }
+
+    public ArrayList<Student> getStudents(){
+
+        ArrayList<Student> student_list = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] field = {"ID","FULLNAME","STATUS"};
+        Cursor c = db.query("students_table", field, null, null, null, null, null);
+
+        int id = c.getColumnIndex("ID");
+        int fname = c.getColumnIndex("FULLNAME");
+        int status = c.getColumnIndex("STATUS");
+
+        for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()){
+            String Id = c.getString(id);
+            String fullname = c.getString(fname);
+            String Status = c.getString(status);
+            student_list.add(new Student(Id,fullname,Status));
+        }
+
+        return student_list;
+    }
+
     public boolean updateData(String id,String fullname,String status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("id",id);
-        contentValues.put("FULL NAME",fullname);
+        contentValues.put("FULLNAME",fullname);
         contentValues.put("STATUS",status);
         db.update(TABLE_NAME1, contentValues, "ID = ?",new String[] { id });
         return true;

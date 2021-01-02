@@ -9,16 +9,14 @@ public class Student {
     private String Examen;
 
 
-    public Student() {
-    }
-
-    public Student(String ID, String fullname, String status,String ds,String examen) {
+    public Student(String ID, String fullname, String status) {
         this.ID = ID;
         this.fullname = fullname;
         this.status = status;
-        this.Ds=ds;
-        this.Examen=examen;
+
     }
+
+
 
     public String getCIN() {
         return ID;
@@ -32,11 +30,11 @@ public class Student {
         return status;
     }
 
-    public String getDs() {
-        return Ds;
-    }
-
-    public String getExamen() {
-        return Examen;
-    }
+//    public String getDs() {
+//        return Ds;
+//    }
+//
+//    public String getExamen() {
+//        return Examen;
+//    }
 }
