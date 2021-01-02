@@ -57,6 +57,14 @@ tools:context=".MainActivity"
         android:text="Done"
         android:layout_marginTop="25dp"
         />
+    <Button
+        android:id="@+id/btnView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="View data"
+        android:layout_marginTop="25dp"
+        />
 
 
 </LinearLayout>
