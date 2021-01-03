@@ -11,9 +11,9 @@ import com.example.gestion_des_absences.classes.Student;
 
 import java.util.ArrayList;
 
-public class DatabaseHelper extends SQLiteOpenHelper {
-    private static final String TAG = "ggghhh";
+import javax.security.auth.Subject;
 
+public class DatabaseHelper extends SQLiteOpenHelper {
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
     }
@@ -23,6 +23,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_NAME1 = "students_table";
     public static final String TABLE_NAME2 = "sessions_table";
     public static final String TABLE_NAME3 = "Notes_table";
+    public static final String TABLE_NAME4 = "history_table";
 
 
     @Override
@@ -30,6 +31,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("create table " + TABLE_NAME1 +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,FULLNAME TEXT,STATUS TEXT)");
         db.execSQL("create table " + TABLE_NAME2 +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,CLASSNAME TEXT,SUBJECT TEXT,TIME TEXT)");
         db.execSQL("create table " + TABLE_NAME3 +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,DS TEXT,SUBJECT TEXT,EXAMEN TEXT)");
+        db.execSQL("create table " + TABLE_NAME4 +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,STUDENTNAME TEXT,SUBJECT TEXT)");
 
     }
 
@@ -38,6 +40,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME1);
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME2);
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME3);
+        db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME4);
 
     }
 
@@ -52,6 +55,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return false;
         else
             return true;
+    }
+
+    public boolean insertHistoryStudents(String studentName,String subject){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues= new ContentValues();
+        contentValues.put("STUDENTNAME",studentName);
+        contentValues.put("SUBJECT",subject);
+        long result = db.insert(TABLE_NAME4,null ,contentValues);
+        if(result == -1)
+            return false;
+        else
+            return true;
+    }
+
+
+
+
+    public Cursor getAbsences(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("select * from students_table where STATUS=='absent'",null);
+        return res;
     }
     public boolean insertNote(String DS,String Examen,String subject) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -73,18 +97,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return res;
     }
 
-//    public ArrayList GetStudents() {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        ArrayList<String> studentsList = new ArrayList<>();
-//        Cursor cursor = db.rawQuery("select * from students_table", null);
-//        while (cursor.moveToNext()) {
-//            studentsList.add();
-//            studentsList.add(cursor.getString(cursor.getColumnIndex("FULLNAME")));
-//            studentsList.add(cursor.getString(cursor.getColumnIndex("STATUS")));
-//
-//        }
-//        return studentsList;
-//    }
+    public Cursor getEliminations(String subject){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query= "SELECT STUDENTNAME,COUNT(*) FROM history_table WHERE SUBJECT == "
+                +" +subject "+" GROUP BY STUDENTNAME ORDER BY 2 Desc";
+        Cursor res = db.rawQuery(query,null);
+        return res;
+    }
+
 
     public ArrayList<Student> getStudents(){
 
@@ -107,13 +127,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return student_list;
     }
 
-    public boolean updateData(String id,String fullname,String status) {
+    public boolean updateData(String id,String status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("id",id);
-        contentValues.put("FULLNAME",fullname);
+        //contentValues.put("FULLNAME",fullname);
         contentValues.put("STATUS",status);
         db.update(TABLE_NAME1, contentValues, "ID = ?",new String[] { id });
         return true;
+    }
+
+    public boolean insertData(String subject,String DS,String Examen) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("DS",DS);
+        contentValues.put("SUBJECT",subject);
+        contentValues.put("EXAMEN",Examen);
+
+        long result = db.insert("Notes_table",null ,contentValues);
+        if(result == -1)
+            return false;
+        else
+            return true;
     }
 }

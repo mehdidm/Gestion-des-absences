@@ -3,27 +3,22 @@ package com.example.gestion_des_absences.classes;
 public class History {
 
     private String subject;
-    private String date;
-    private String classeName;
+    private String studentName;
 
     public History() {
     }
 
-    public History(String subject, String date, String classeName) {
+    public History(String subject, String studentName) {
         this.subject = subject;
-        this.date = date;
-        this.classeName = classeName;
+        this.studentName = studentName;
     }
 
     public String getSubject() {
         return subject;
     }
 
-    public String getDate() {
-        return date;
-    }
 
-    public String getClasseName() {
-        return classeName;
+    public String getStudentName() {
+        return studentName;
     }
 }

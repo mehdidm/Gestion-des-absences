@@ -55,7 +55,7 @@ tools:context=".MainActivity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Done"
+        android:text="Faire la présence"
         android:layout_marginTop="25dp"
         />
     <Button
@@ -63,7 +63,16 @@ tools:context=".MainActivity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="View data"
+        android:text="voir seance"
+        android:layout_marginTop="25dp"
+        />
+
+    <Button
+        android:id="@+id/btnE"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="élimination"
         android:layout_marginTop="25dp"
         />
 

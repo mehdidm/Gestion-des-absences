@@ -15,6 +15,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.gestion_des_absences.adapters.DatabaseHelper;
+import com.example.gestion_des_absences.adapters.StudentAdapter;
 import com.example.gestion_des_absences.classes.Session;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class MainActivity extends Activity  {
     DatabaseHelper MyDB;
 Spinner groupes , seances ,matieres;
 String groupe,seance,matiere;
-Button btnDone,btnView;
+Button btnDone,btnView,btnAB;
 ArrayList<String> arraylist_Groupes;
 ArrayAdapter<String> arraylist_adapter_groupes,
     arraylist_adapter_matieres, arraylist_adapter_seances
@@ -36,6 +37,7 @@ ArrayAdapter<String> arraylist_adapter_groupes,
         groupes = (Spinner) findViewById(R.id.Groupes);
         btnDone= findViewById(R.id.btnDone);
         btnView=findViewById(R.id.btnView);
+        btnAB=findViewById(R.id.btnE);
         MyDB = new DatabaseHelper(this);
 
         arraylist_Groupes = new ArrayList<>();
@@ -48,9 +50,6 @@ ArrayAdapter<String> arraylist_adapter_groupes,
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
                  groupe = parent.getItemAtPosition(position).toString();
-
-                Toast.makeText(parent.getContext(), "You selected: " + groupe,
-                        Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -74,9 +73,6 @@ ArrayAdapter<String> arraylist_adapter_groupes,
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
                  seance = parent.getItemAtPosition(position).toString();
-
-                Toast.makeText(parent.getContext(), "You selected: " + seance,
-                        Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -99,9 +95,6 @@ ArrayAdapter<String> arraylist_adapter_groupes,
             public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
                 matiere = parent.getItemAtPosition(position).toString();
 
-                Toast.makeText(parent.getContext(), "You selected: " + matiere,
-                        Toast.LENGTH_LONG).show();
-
             }
 
             @Override
@@ -111,6 +104,7 @@ ArrayAdapter<String> arraylist_adapter_groupes,
         });
         AddData(groupe,matiere,seance);
         viewAll();
+        getAbsences();
     }
         public void AddData(String groupe, String matiere, String seance) {
             btnDone.setOnClickListener(
@@ -119,6 +113,7 @@ ArrayAdapter<String> arraylist_adapter_groupes,
                         public void onClick(View v) {
                             boolean isInserted = MyDB.insertSession(MainActivity.this.groupe, MainActivity.this.matiere, MainActivity.this.seance);
                             Intent myIntent = new Intent(MainActivity.this, listEtudiant.class);
+                            myIntent.putExtra("Subject",MainActivity.this.matiere);
                             MainActivity.this.startActivity(myIntent);
                             if (isInserted == true)
                                 Toast.makeText(MainActivity.this, "Data Inserted", Toast.LENGTH_LONG).show();
@@ -137,6 +132,7 @@ ArrayAdapter<String> arraylist_adapter_groupes,
                     @Override
                     public void onClick(View v) {
                         Cursor res = MyDB.getAllData("sessions_table");
+
                         if (res.getCount() == 0) {
                             // show message
                             showMessage("Error", "Nothing found");
@@ -145,9 +141,10 @@ ArrayAdapter<String> arraylist_adapter_groupes,
 
                         StringBuffer buffer = new StringBuffer();
                         while (res.moveToNext()) {
-                            buffer.append("Groupe :" + res.getString(0) + "\n");
-                            buffer.append("Matiere :" + res.getString(1) + "\n");
-                            buffer.append("Seance :" + res.getString(2) + "\n");
+                            buffer.append("Groupe :" + res.getString(1) + "\n");
+                            buffer.append("Matiere :" + res.getString(2) + "\n");
+                            buffer.append("Seance :" + res.getString(3) + "\n");
+
                         }
 
                         // Show all data
@@ -162,6 +159,21 @@ ArrayAdapter<String> arraylist_adapter_groupes,
         builder.setTitle(title);
         builder.setMessage(Message);
         builder.show();
+    }
+
+    public void getAbsences(){
+        btnAB.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //MyDB.getAbsences();
+                        Intent myIntent = new Intent(MainActivity.this, history.class);
+                        myIntent.putExtra("Subject",MainActivity.this.matiere);
+                        MainActivity.this.startActivity(myIntent);
+                    }
+                }
+        );
+
     }
 
 

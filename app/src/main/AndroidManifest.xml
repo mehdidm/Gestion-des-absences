@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Gestion_des_absences">
-        <activity android:name=".listEtudiant"></activity>
+        <activity android:name=".history"></activity>
+        <activity android:name=".listEtudiant" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
