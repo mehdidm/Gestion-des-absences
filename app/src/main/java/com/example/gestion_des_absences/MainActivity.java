@@ -1,7 +1,5 @@
 package com.example.gestion_des_absences;
 
-
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -24,7 +22,7 @@ public class MainActivity extends Activity  {
     DatabaseHelper MyDB;
 Spinner groupes , seances ,matieres;
 String groupe,seance,matiere;
-Button btnDone,btnView,btnAB;
+Button btnDone,btnView,btnAB,btnNote;
 ArrayList<String> arraylist_Groupes;
 ArrayAdapter<String> arraylist_adapter_groupes,
     arraylist_adapter_matieres, arraylist_adapter_seances
@@ -38,6 +36,7 @@ ArrayAdapter<String> arraylist_adapter_groupes,
         btnDone= findViewById(R.id.btnDone);
         btnView=findViewById(R.id.btnView);
         btnAB=findViewById(R.id.btnE);
+        btnNote=findViewById(R.id.btn_notes);
         MyDB = new DatabaseHelper(this);
 
         arraylist_Groupes = new ArrayList<>();
@@ -105,6 +104,7 @@ ArrayAdapter<String> arraylist_adapter_groupes,
         AddData(groupe,matiere,seance);
         viewAll();
         getAbsences();
+        viewNotes();
     }
         public void AddData(String groupe, String matiere, String seance) {
             btnDone.setOnClickListener(
@@ -153,6 +153,38 @@ ArrayAdapter<String> arraylist_adapter_groupes,
                 }
         );
     }
+
+    public void viewNotes() {
+        btnNote.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Cursor res = MyDB.getAllData("Notes_table");
+
+                        if (res.getCount() == 0) {
+                            // show message
+                            showMessage("Error", "Nothing found");
+                            return;
+                        }
+
+                        StringBuffer buffer = new StringBuffer();
+                        while (res.moveToNext()) {
+                            buffer.append("student name :" + res.getString(4) + "\n");
+                            buffer.append("Matiere :" + res.getString(2) + "\n");
+                            buffer.append("note Ds :" + res.getString(1) + "\n");
+                            buffer.append("note Examen :" + res.getString(3) + "\n");
+                            buffer.append("moyenne generale :" + res.getString(5)+ "\n");
+
+                        }
+
+                        // Show all data
+                        showMessage("Notes", buffer.toString());
+                    }
+                }
+        );
+    }
+
+
     public void showMessage(String title, String Message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);

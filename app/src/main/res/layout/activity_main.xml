@@ -75,6 +75,13 @@ tools:context=".MainActivity"
         android:text="élimination"
         android:layout_marginTop="25dp"
         />
+<Button
+    android:id="@+id/btn_notes"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="25dp"
+    android:gravity="center"
+    android:text="voir notes"/>
 
 
 </LinearLayout>

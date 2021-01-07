@@ -77,12 +77,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor res = db.rawQuery("select * from students_table where STATUS=='absent'",null);
         return res;
     }
-    public boolean insertNote(String DS,String Examen,String subject) {
+    public boolean insertNote(String DS,String Examen,String subject,String studentName,String moyenne) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("SUBJECT",subject);
         contentValues.put("DS",DS);
         contentValues.put("EXAMEN",Examen);
+        contentValues.put("studentName",studentName);
+        contentValues.put("MOYENNE",moyenne);
         long result = db.insert(TABLE_NAME3,null ,contentValues);
         if(result == -1)
             return false;

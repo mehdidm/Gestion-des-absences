@@ -1,22 +1,25 @@
 package com.example.gestion_des_absences.classes;
 
 public class Note {
-    private String studentID;
+    private String studentName;
     private String subject;
     private String DS;
     private String Examen;
+    private String Moyenne;
 
     public Note() {
     }
 
-    public Note(String studentID, String subject,String DS,String Examen) {
+    public Note(String studentName, String subject,String DS,String Examen,String moyenne) {
+        this.studentName=studentName;
         this.subject = subject;
         this.DS =DS;
         this.Examen = Examen;
+        this.Moyenne = moyenne;
     }
 
-    public String getStudentID() {
-        return studentID;
+    public String getStudentName() {
+        return studentName;
     }
 
     public String getSubject() {
@@ -29,5 +32,9 @@ public class Note {
 
     public String getExamen() {
         return Examen;
+    }
+
+    public String getMoyenne() {
+        return Moyenne;
     }
 }

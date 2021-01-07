@@ -13,6 +13,8 @@ public class Student {
         this.ID = ID;
         this.fullname = fullname;
         this.status = status;
+        this.Examen=Examen;
+        this.Ds=Ds;
 
     }
 

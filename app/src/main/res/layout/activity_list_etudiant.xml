@@ -36,10 +36,14 @@
     <ListView
         android:id="@+id/etudiantList"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:divider="@color/material_blue_grey_800"
         android:dividerHeight="1dp"
-        android:footerDividersEnabled="false" >
+        android:footerDividersEnabled="false">
 
     </ListView>
+
+
+
+
 </LinearLayout>

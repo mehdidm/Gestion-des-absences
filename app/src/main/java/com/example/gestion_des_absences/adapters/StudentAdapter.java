@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -36,6 +37,8 @@ DatabaseHelper MyDB;
 
         convertView = LayoutInflater.from(context).inflate(resource,parent,false);
         TextView nom= convertView.findViewById(R.id.nomEtPrenom);
+        EditText Ds=convertView.findViewById(R.id.ds);
+        EditText Ex = convertView.findViewById(R.id.ex);
         CheckBox checkBox;
         checkBox= convertView.findViewById(R.id.checkBox);
         MyDB = new DatabaseHelper(context);
@@ -43,15 +46,16 @@ DatabaseHelper MyDB;
         Student currentStudent =getItem(position);
         nom.setText(currentStudent.getFullname());
 
-
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (isChecked){
                    MyDB.updateData(currentStudent.getCIN(),"present");
+                    MyDB.insertNote(Ds.getText().toString(),Ex.getText().toString(),"conception",currentStudent.getFullname(),getMoyenne(Ds.getText().toString(),Ex.getText().toString()));
+
                 }
                 else{
-                    MyDB.updateData(currentStudent.getCIN().toString(),"absent");
+                    //MyDB.updateData(currentStudent.getCIN(),"absent");
                     MyDB.insertHistoryStudents(currentStudent.getFullname(),"web dev");
 
                 }
@@ -59,8 +63,18 @@ DatabaseHelper MyDB;
         });
 
 
+
+
+
+
         return convertView;
     }
+
+    public String getMoyenne(String x, String y){
+        return
+               String.valueOf((Double.parseDouble(String.valueOf(x))+Double.parseDouble(String.valueOf(y)))/2) ;
+    }
+
 
 
 }
