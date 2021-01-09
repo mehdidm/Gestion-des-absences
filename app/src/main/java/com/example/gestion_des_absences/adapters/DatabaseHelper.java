@@ -75,11 +75,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 
-    public Cursor getAbsences(){
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor res = db.rawQuery("select * from students_table where STATUS=='absent'",null);
-        return res;
-    }
+
     public boolean insertNote(String DS,String Examen,String subject,String studentName,String moyenne) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -115,15 +111,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public boolean updateNote(String id,String Ds,String Ex) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("id",id);
-        contentValues.put("DS",Ds);
-        contentValues.put("Ex",Ex);
-        db.update(TABLE_NAME1, contentValues, "ID = ?",new String[] { id });
-        return true;
-    }
+
 
 
     public Cursor getAllData(String TABLE_NAME) {
@@ -132,7 +120,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return res;
     }
 
-    //public Cursor getStudentsNotes(String )
 
     public Cursor getEliminations(String subject){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -174,17 +161,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean insertData(String subject,String DS,String Examen) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("DS",DS);
-        contentValues.put("SUBJECT",subject);
-        contentValues.put("EXAMEN",Examen);
-
-        long result = db.insert("Notes_table",null ,contentValues);
-        if(result == -1)
-            return false;
-        else
-            return true;
-    }
+//    public boolean insertData(String subject,String DS,String Examen) {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        ContentValues contentValues = new ContentValues();
+//        contentValues.put("DS",DS);
+//        contentValues.put("SUBJECT",subject);
+//        contentValues.put("EXAMEN",Examen);
+//
+//        long result = db.insert("Notes_table",null ,contentValues);
+//        if(result == -1)
+//            return false;
+//        else
+//            return true;
+//    }
 }

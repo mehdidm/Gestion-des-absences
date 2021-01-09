@@ -8,18 +8,37 @@ android:layout_height="match_parent"
 android:orientation="vertical"
 tools:context=".MainActivity"
     android:padding="20dp">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:text="Welcome "
+        android:textSize="30dp"/>
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="monsieur"
+        android:textSize="30dp"/>
+</LinearLayout>
 
     <TextView
     android:id="@+id/textG"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
     android:text="Groupes"
     android:textSize="20dp"/>
 <Spinner
     android:id="@+id/Groupes"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"/>
+    android:layout_marginTop="15dp"/>
 
 
 
@@ -55,16 +74,21 @@ tools:context=".MainActivity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:textColor="@color/white"
         android:text="Faire la présence"
         android:layout_marginTop="25dp"
+        android:backgroundTint="#2900ff"
         />
     <Button
         android:id="@+id/btnView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="voir seance"
+        android:textColor="@color/white"
+        android:text="Liste des seances"
         android:layout_marginTop="25dp"
+        android:backgroundTint="#2900ff"
+
         />
 
     <Button
@@ -72,8 +96,11 @@ tools:context=".MainActivity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="élimination"
+        android:text="Liste éliminations"
+        android:textColor="@color/white"
         android:layout_marginTop="25dp"
+        android:backgroundTint="#2900ff"
+
         />
 <Button
     android:id="@+id/btn_notes"
@@ -81,7 +108,9 @@ tools:context=".MainActivity"
     android:layout_height="wrap_content"
     android:layout_marginTop="25dp"
     android:gravity="center"
-    android:text="voir notes"/>
+    android:textColor="@color/white"
+    android:backgroundTint="#2900ff"
+    android:text="Liste des notes"/>
 
 
 </LinearLayout>

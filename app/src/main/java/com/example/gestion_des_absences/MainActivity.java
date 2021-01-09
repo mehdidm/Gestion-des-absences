@@ -9,20 +9,24 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.gestion_des_absences.adapters.DatabaseHelper;
-import com.example.gestion_des_absences.adapters.StudentAdapter;
-import com.example.gestion_des_absences.classes.Session;
+
 
 import java.util.ArrayList;
 
+
 public class MainActivity extends Activity  {
     DatabaseHelper MyDB;
+    Intent loginIntent;
 Spinner groupes , seances ,matieres;
 String groupe,seance,matiere;
 Button btnDone,btnView,btnAB,btnNote;
+TextView Tname;
 ArrayList<String> arraylist_Groupes;
 ArrayAdapter<String> arraylist_adapter_groupes,
     arraylist_adapter_matieres, arraylist_adapter_seances
@@ -31,14 +35,15 @@ ArrayAdapter<String> arraylist_adapter_groupes,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         groupes = (Spinner) findViewById(R.id.Groupes);
         btnDone= findViewById(R.id.btnDone);
         btnView=findViewById(R.id.btnView);
         btnAB=findViewById(R.id.btnE);
         btnNote=findViewById(R.id.btn_notes);
         MyDB = new DatabaseHelper(this);
-
+        loginIntent=getIntent();
+        Tname=findViewById(R.id.name);
+        Tname.setText(loginIntent.getStringExtra("username"));
         arraylist_Groupes = new ArrayList<>();
         arraylist_Groupes.add("Dsi31");
         arraylist_Groupes.add("DSi32");
@@ -103,7 +108,7 @@ ArrayAdapter<String> arraylist_adapter_groupes,
         });
         AddData(groupe,matiere,seance);
         viewAll();
-        getAbsences();
+        viewAbsents(matiere);
         viewNotes();
     }
         public void AddData(String groupe, String matiere, String seance) {
@@ -148,7 +153,7 @@ ArrayAdapter<String> arraylist_adapter_groupes,
                         }
 
                         // Show all data
-                        showMessage("Data", buffer.toString());
+                        showMessage("Liste des seances", buffer.toString());
                     }
                 }
         );
@@ -182,6 +187,29 @@ ArrayAdapter<String> arraylist_adapter_groupes,
                     }
                 }
         );
+    }public void viewAbsents(String subject) {
+        btnAB.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Cursor res = MyDB.getEliminations(subject);
+                        if (res.getCount() == 0) {
+                            // show message
+                            showMessage("Error", "Nothing found");
+                            return;
+                        }
+
+                        StringBuffer buffer = new StringBuffer();
+                        while (res.moveToNext()) {
+                            buffer.append("student name :" + res.getString(0) + "\n");
+                            buffer.append("nombre absences :" + res.getString(1) + "\n");
+                        }
+
+                        // Show all data
+                        showMessage("Liste absences", buffer.toString());
+                    }
+                }
+        );
     }
 
 
@@ -193,20 +221,20 @@ ArrayAdapter<String> arraylist_adapter_groupes,
         builder.show();
     }
 
-    public void getAbsences(){
-        btnAB.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //MyDB.getAbsences();
-                        Intent myIntent = new Intent(MainActivity.this, history.class);
-                        myIntent.putExtra("Subject",MainActivity.this.matiere);
-                        MainActivity.this.startActivity(myIntent);
-                    }
-                }
-        );
-
-    }
+//    public void getAbsences(){
+//        btnAB.setOnClickListener(
+//                new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        //MyDB.getAbsences();
+//                        Intent myIntent = new Intent(MainActivity.this, history.class);
+//                        myIntent.putExtra("Subject",MainActivity.this.matiere);
+//                        MainActivity.this.startActivity(myIntent);
+//                    }
+//                }
+//        );
+//
+//    }
 
 
 }
