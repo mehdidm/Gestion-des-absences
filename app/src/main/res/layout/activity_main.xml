@@ -49,7 +49,7 @@ tools:context=".MainActivity"
         android:layout_height="wrap_content"
         android:text="Matieres "
         android:textSize="20dp"
-        android:layout_marginTop="100dp"/>
+        android:layout_marginTop="50dp"/>
     <Spinner
         android:id="@+id/Matieres"
         android:layout_width="match_parent"
@@ -62,7 +62,7 @@ tools:context=".MainActivity"
         android:layout_height="wrap_content"
         android:text="Seances "
         android:textSize="20dp"
-        android:layout_marginTop="100dp"/>
+        android:layout_marginTop="50dp"/>
     <Spinner
         android:id="@+id/Seances"
         android:layout_width="match_parent"
@@ -76,7 +76,7 @@ tools:context=".MainActivity"
         android:gravity="center"
         android:textColor="@color/white"
         android:text="Faire la présence"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
         android:backgroundTint="#2900ff"
         />
     <Button
@@ -86,7 +86,7 @@ tools:context=".MainActivity"
         android:gravity="center"
         android:textColor="@color/white"
         android:text="Liste des seances"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
         android:backgroundTint="#2900ff"
 
         />
@@ -98,7 +98,7 @@ tools:context=".MainActivity"
         android:gravity="center"
         android:text="Liste éliminations"
         android:textColor="@color/white"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
         android:backgroundTint="#2900ff"
 
         />
