@@ -46,17 +46,31 @@ DatabaseHelper MyDB;
         Student currentStudent =getItem(position);
         nom.setText(currentStudent.getFullname());
 
+        //Ds.setText((CharSequence) MyDB.getStudentNotes(currentStudent.getFullname()));
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if (isChecked){
-                   MyDB.updateData(currentStudent.getCIN(),"present");
-                    MyDB.insertNote(Ds.getText().toString(),Ex.getText().toString(),"conception",currentStudent.getFullname(),getMoyenne(Ds.getText().toString(),Ex.getText().toString()));
+                if (isChecked && Ds.getText().toString().matches("")&&Ex.getText().toString().matches("")){
+
+                    //MyDB.insertNote(Ds.getText().toString(),Ex.getText().toString(),"conception",currentStudent.getFullname(),getMoyenne(Ds.getText().toString(),Ex.getText().toString()));
+//                    Ds.setText(MyDB.getNoteDS(currentStudent.getFullname()));
+//                    Ex.setText(MyDB.getNoteEx(currentStudent.getFullname()));
+                    MyDB.updateData(currentStudent.getCIN(),"present");
+
+                    }else if(! isChecked&& Ds.getText().toString().matches("")&&Ex.getText().toString().matches("")){
+//                    Ds.setText(MyDB.getNoteDS(currentStudent.getFullname()));
+//                    Ex.setText(MyDB.getNoteEx(currentStudent.getFullname()));
+                    MyDB.updateData(currentStudent.getCIN(),"absent");
+                    MyDB.insertHistoryStudents(currentStudent.getFullname(),"web dev");
 
                 }
-                else{
+
+                else {
+                    MyDB.updateData(currentStudent.getCIN(),"present");
+                    MyDB.insertNote(Ds.getText().toString(),Ex.getText().toString(),"conception",currentStudent.getFullname(),getMoyenne(Ds.getText().toString(),Ex.getText().toString()));
+
                     //MyDB.updateData(currentStudent.getCIN(),"absent");
-                    MyDB.insertHistoryStudents(currentStudent.getFullname(),"web dev");
+                    //MyDB.insertNote(Ds.getText().toString(),Ex.getText().toString(),"conception",currentStudent.getFullname(),getMoyenne(Ds.getText().toString(),Ex.getText().toString()));
 
                 }
             }

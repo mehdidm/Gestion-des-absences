@@ -24,14 +24,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_NAME2 = "sessions_table";
     public static final String TABLE_NAME3 = "Notes_table";
     public static final String TABLE_NAME4 = "history_table";
+    public static final String TABLE_NAME5 = "teachers_table";
 
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table " + TABLE_NAME1 +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,FULLNAME TEXT,STATUS TEXT)");
         db.execSQL("create table " + TABLE_NAME2 +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,CLASSNAME TEXT,SUBJECT TEXT,TIME TEXT)");
-        db.execSQL("create table " + TABLE_NAME3 +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,DS TEXT,SUBJECT TEXT,EXAMEN TEXT)");
+        db.execSQL("create table " + TABLE_NAME3 +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,DS TEXT,SUBJECT TEXT,EXAMEN TEXT,STUDENTNAME TEXT)");
         db.execSQL("create table " + TABLE_NAME4 +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,STUDENTNAME TEXT,SUBJECT TEXT)");
+        db.execSQL("create table " + TABLE_NAME5 +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,USERNAME TEXT,PASSWORD TEXT)");
 
     }
 
@@ -41,6 +43,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME2);
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME3);
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME4);
+        db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME5);
 
     }
 
@@ -91,6 +94,36 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         else
             return true;
     }
+    public boolean checkUserExist(String username, String password){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String[] columns = {"username"};
+
+        String selection = "username=? and password = ?";
+        String[] selectionArgs = {username, password};
+
+        Cursor cursor = db.query(TABLE_NAME5, columns, selection, selectionArgs, null, null, null);
+        int count = cursor.getCount();
+
+        cursor.close();
+        close();
+
+        if(count > 0){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean updateNote(String id,String Ds,String Ex) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("id",id);
+        contentValues.put("DS",Ds);
+        contentValues.put("Ex",Ex);
+        db.update(TABLE_NAME1, contentValues, "ID = ?",new String[] { id });
+        return true;
+    }
 
 
     public Cursor getAllData(String TABLE_NAME) {
@@ -98,6 +131,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor res = db.rawQuery("select * from "+TABLE_NAME,null);
         return res;
     }
+
+    //public Cursor getStudentsNotes(String )
 
     public Cursor getEliminations(String subject){
         SQLiteDatabase db = this.getWritableDatabase();
