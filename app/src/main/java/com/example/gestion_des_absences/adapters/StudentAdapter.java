@@ -41,6 +41,8 @@ DatabaseHelper MyDB;
         EditText Ex = convertView.findViewById(R.id.ex);
         CheckBox checkBox;
         checkBox= convertView.findViewById(R.id.checkBox);
+
+        //declaration de bdd
         MyDB = new DatabaseHelper(context);
 
         Student currentStudent =getItem(position);
@@ -52,25 +54,18 @@ DatabaseHelper MyDB;
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (isChecked && Ds.getText().toString().matches("")&&Ex.getText().toString().matches("")){
 
-                    //MyDB.insertNote(Ds.getText().toString(),Ex.getText().toString(),"conception",currentStudent.getFullname(),getMoyenne(Ds.getText().toString(),Ex.getText().toString()));
-//                    Ds.setText(MyDB.getNoteDS(currentStudent.getFullname()));
-//                    Ex.setText(MyDB.getNoteEx(currentStudent.getFullname()));
                     MyDB.updateData(currentStudent.getCIN(),"present");
 
                     }else if(! isChecked&& Ds.getText().toString().matches("")&&Ex.getText().toString().matches("")){
-//                    Ds.setText(MyDB.getNoteDS(currentStudent.getFullname()));
-//                    Ex.setText(MyDB.getNoteEx(currentStudent.getFullname()));
+//
                     MyDB.updateData(currentStudent.getCIN(),"absent");
-                    MyDB.insertHistoryStudents(currentStudent.getFullname(),"web dev");
+                    MyDB.insertHistoryStudents(currentStudent.getFullname(),"dev mobile");
 
                 }
 
                 else {
                     MyDB.updateData(currentStudent.getCIN(),"present");
                     MyDB.insertNote(Ds.getText().toString(),Ex.getText().toString(),"conception",currentStudent.getFullname(),getMoyenne(Ds.getText().toString(),Ex.getText().toString()));
-
-                    //MyDB.updateData(currentStudent.getCIN(),"absent");
-                    //MyDB.insertNote(Ds.getText().toString(),Ex.getText().toString(),"conception",currentStudent.getFullname(),getMoyenne(Ds.getText().toString(),Ex.getText().toString()));
 
                 }
             }

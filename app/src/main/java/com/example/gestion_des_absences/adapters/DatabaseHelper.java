@@ -17,7 +17,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
     }
-
+//declaration des tableaux
 
     public static final String DATABASE_NAME = "Students.db";
     public static final String TABLE_NAME1 = "students_table";
@@ -28,6 +28,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     @Override
+    //cfreation des tableaux dans la base
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table " + TABLE_NAME1 +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,FULLNAME TEXT,STATUS TEXT)");
         db.execSQL("create table " + TABLE_NAME2 +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,CLASSNAME TEXT,SUBJECT TEXT,TIME TEXT)");
@@ -46,7 +47,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME5);
 
     }
-
+//insertion des seances
     public boolean insertSession(String classname,String subject,String time) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -59,7 +60,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         else
             return true;
     }
-
+//insertion des absences
     public boolean insertHistoryStudents(String studentName,String subject){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues= new ContentValues();
@@ -74,7 +75,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 
-
+//insertion des notes
 
     public boolean insertNote(String DS,String Examen,String subject,String studentName,String moyenne) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -90,6 +91,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         else
             return true;
     }
+
+    //login
     public boolean checkUserExist(String username, String password){
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -113,13 +116,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 
-
+//lire les donnees de la base en passant le nom de table en parametre
     public Cursor getAllData(String TABLE_NAME) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("select * from "+TABLE_NAME,null);
         return res;
     }
 
+    //lire les absences dans chaque matiere
 
     public Cursor getEliminations(String subject){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -129,7 +133,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return res;
     }
 
-
+//lire liste des etudiants dans une liste
     public ArrayList<Student> getStudents(){
 
         ArrayList<Student> student_list = new ArrayList<>();
@@ -150,12 +154,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return student_list;
     }
-
+//marque de presence
     public boolean updateData(String id,String status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("id",id);
-        //contentValues.put("FULLNAME",fullname);
         contentValues.put("STATUS",status);
         db.update(TABLE_NAME1, contentValues, "ID = ?",new String[] { id });
         return true;

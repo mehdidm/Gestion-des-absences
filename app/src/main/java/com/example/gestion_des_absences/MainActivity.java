@@ -111,6 +111,9 @@ ArrayAdapter<String> arraylist_adapter_groupes,
         viewAbsents(matiere);
         viewNotes();
     }
+
+
+    //choix de seance et groupe et matiere et insertion dans la table sessions_table
         public void AddData(String groupe, String matiere, String seance) {
             btnDone.setOnClickListener(
                     new View.OnClickListener() {
@@ -129,7 +132,7 @@ ArrayAdapter<String> arraylist_adapter_groupes,
                     }
             );
         }
-
+//affichage de table des seances
 
     public void viewAll() {
         btnView.setOnClickListener(
@@ -158,7 +161,7 @@ ArrayAdapter<String> arraylist_adapter_groupes,
                 }
         );
     }
-
+//affichage de table notes_table
     public void viewNotes() {
         btnNote.setOnClickListener(
                 new View.OnClickListener() {
@@ -187,7 +190,10 @@ ArrayAdapter<String> arraylist_adapter_groupes,
                     }
                 }
         );
-    }public void viewAbsents(String subject) {
+
+    }
+    //affichage des liste des absences et nombre des absences de chaque matiere choisi
+    public void viewAbsents(String subject) {
         btnAB.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -212,7 +218,7 @@ ArrayAdapter<String> arraylist_adapter_groupes,
         );
     }
 
-
+//fonction d'affichage de pop up
     public void showMessage(String title, String Message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);
