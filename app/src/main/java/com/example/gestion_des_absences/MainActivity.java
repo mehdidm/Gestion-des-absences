@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -22,12 +23,14 @@ import java.util.ArrayList;
 
 public class MainActivity extends Activity  {
     DatabaseHelper MyDB;
-    Intent loginIntent;
+    Intent loginIntent,intentGRP,intentMAT;
 Spinner groupes , seances ,matieres;
 String groupe,seance,matiere;
 Button btnDone,btnView,btnAB,btnNote;
 TextView Tname;
-ArrayList<String> arraylist_Groupes;
+//declaration arraylist et adapter for classes list
+ArrayList<String> arraylist_Groupes,arraylist_Seances,arraylist_Matieres;
+
 ArrayAdapter<String> arraylist_adapter_groupes,
     arraylist_adapter_matieres, arraylist_adapter_seances
        ;
@@ -45,15 +48,19 @@ ArrayAdapter<String> arraylist_adapter_groupes,
         Tname=findViewById(R.id.name);
         Tname.setText(loginIntent.getStringExtra("username"));
         arraylist_Groupes = new ArrayList<>();
-        arraylist_Groupes.add("Dsi31");
-        arraylist_Groupes.add("DSi32");
-        arraylist_Groupes.add("Sem31");
-        arraylist_adapter_groupes = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, arraylist_Groupes);
-        groupes.setAdapter(arraylist_adapter_groupes);
+//        arraylist_Groupes.add("Dsi31");
+//        arraylist_Groupes.add("DSi32");
+//        arraylist_Groupes.add("Sem31");
+//        arraylist_adapter_groupes = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, arraylist_Groupes);
+//        groupes.setAdapter(arraylist_adapter_groupes);
+        prepareDataGRoupes();
         groupes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
                  groupe = parent.getItemAtPosition(position).toString();
+                 intentGRP= new Intent(MainActivity.this,listEtudiant.class);
+                 intentGRP.putExtra("groupe" ,
+                         groupe);
             }
 
             @Override
@@ -64,12 +71,11 @@ ArrayAdapter<String> arraylist_adapter_groupes,
         });
 
 
-        ArrayList<String> arraylist_Seances;
         seances = (Spinner) findViewById(R.id.Seances);
         arraylist_Seances = new ArrayList<>();
-        arraylist_Seances.add("S1");
-        arraylist_Seances.add("S2");
-        arraylist_Seances.add("S3");
+//        arraylist_Seances.add("S1");
+//        arraylist_Seances.add("S2");
+//        arraylist_Seances.add("S3");
         arraylist_adapter_seances = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, arraylist_Seances);
         seances.setAdapter(arraylist_adapter_seances);
 
@@ -86,18 +92,21 @@ ArrayAdapter<String> arraylist_adapter_groupes,
         });
 
 
-        ArrayList<String> arraylist_Matieres;
         matieres = (Spinner) findViewById(R.id.Matieres);
         arraylist_Matieres = new ArrayList<>();
-        arraylist_Matieres.add("Conception");
-        arraylist_Matieres.add("Dev mobile");
-        arraylist_Matieres.add("Dev Web");
-        arraylist_adapter_matieres = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, arraylist_Matieres);
-        matieres.setAdapter(arraylist_adapter_matieres);
+//        arraylist_Matieres.add("Conception");
+//        arraylist_Matieres.add("Dev mobile");
+//        arraylist_Matieres.add("Dev Web");
+        prepareDataMatieres();
+//        arraylist_adapter_matieres = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, arraylist_Matieres);
+//        matieres.setAdapter(arraylist_adapter_matieres);
         matieres.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
                 matiere = parent.getItemAtPosition(position).toString();
+                intentMAT= new Intent(MainActivity.this,listEtudiant.class);
+                intentMAT.putExtra("matiere" ,
+                        matiere);
 
             }
 
@@ -120,9 +129,11 @@ ArrayAdapter<String> arraylist_adapter_groupes,
                         @Override
                         public void onClick(View v) {
                             boolean isInserted = MyDB.insertSession(MainActivity.this.groupe, MainActivity.this.matiere, MainActivity.this.seance);
-                            Intent myIntent = new Intent(MainActivity.this, listEtudiant.class);
-                            myIntent.putExtra("Subject",MainActivity.this.matiere);
-                            MainActivity.this.startActivity(myIntent);
+                            //Intent myIntent = new Intent(MainActivity.this, listEtudiant.class);
+                            startActivity(intentGRP);
+                            //startActivity(intentMAT);
+//                            myIntent.putExtra("Subject",MainActivity.this.matiere);
+//                            MainActivity.this.startActivity(myIntent);
                             if (isInserted == true)
                                 Toast.makeText(MainActivity.this, "Data Inserted", Toast.LENGTH_LONG).show();
 
@@ -226,7 +237,25 @@ ArrayAdapter<String> arraylist_adapter_groupes,
         builder.setMessage(Message);
         builder.show();
     }
+//put data into spinner
+    public void prepareDataGRoupes() {
+        arraylist_Groupes = (ArrayList<String>) MyDB.getAllclasses();
+        //adapter for spinner
+        arraylist_adapter_groupes = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, android.R.id.text1, arraylist_Groupes);
+        //attach adapter to spinner
+        groupes.setAdapter(arraylist_adapter_groupes);
 
+    }
+
+
+    public void prepareDataMatieres() {
+        arraylist_Matieres = (ArrayList<String>) MyDB.getAllmatieres();
+        //adapter for spinner
+        arraylist_adapter_matieres = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, android.R.id.text1, arraylist_Matieres);
+        //attach adapter to spinner
+        matieres.setAdapter(arraylist_adapter_matieres);
+
+    }
 //    public void getAbsences(){
 //        btnAB.setOnClickListener(
 //                new View.OnClickListener() {

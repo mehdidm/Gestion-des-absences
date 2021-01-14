@@ -10,6 +10,7 @@ import android.util.Log;
 import com.example.gestion_des_absences.classes.Student;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.security.auth.Subject;
 
@@ -21,20 +22,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "Students.db";
     public static final String TABLE_NAME1 = "students_table";
-    public static final String TABLE_NAME2 = "sessions_table";
+    public static final String TABLE_NAME2 = "enseignement_table";
     public static final String TABLE_NAME3 = "Notes_table";
     public static final String TABLE_NAME4 = "history_table";
     public static final String TABLE_NAME5 = "teachers_table";
+    public static final String TABLE_NAME6 = "matiere_table";
+    public static final String TABLE_NAME7 = "classe_table";
+    public static final String TABLE_NAME8 = "seance_table";
 
 
     @Override
-    //cfreation des tableaux dans la base
+    //creation des tableaux dans la base
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table " + TABLE_NAME1 +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,FULLNAME TEXT,STATUS TEXT)");
-        db.execSQL("create table " + TABLE_NAME2 +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,CLASSNAME TEXT,SUBJECT TEXT,TIME TEXT)");
+        db.execSQL("create table " + TABLE_NAME1 +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,FULLNAME TEXT,STATUS TEXT,CLASS TEXT)");
+        db.execSQL("create table " + TABLE_NAME2 +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,TEACHER TEXT,CLASSNAME TEXT,SUBJECT TEXT,TIME TEXT)");
         db.execSQL("create table " + TABLE_NAME3 +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,DS TEXT,SUBJECT TEXT,EXAMEN TEXT,STUDENTNAME TEXT,MOYENNE TEXT)");
         db.execSQL("create table " + TABLE_NAME4 +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,STUDENTNAME TEXT,SUBJECT TEXT)");
         db.execSQL("create table " + TABLE_NAME5 +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,USERNAME TEXT,PASSWORD TEXT)");
+        db.execSQL("create table " + TABLE_NAME6 +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,DESC_mat TEXT,VOL_HR_mat TEXT, COEF_mat TEXT)");
+        db.execSQL("create table " + TABLE_NAME7 +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,CODE_class TEXT,DESC_class TEXT)");
+        db.execSQL("create table " + TABLE_NAME8 +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,DATE_sce TEXT,TYPE_sce TEXT)");
 
     }
 
@@ -45,14 +52,61 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME3);
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME4);
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME5);
+        db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME6);
+        db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME7);
+        db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME8);
 
     }
-//insertion des seances
+
+
+    //getting all classes from database
+    public List<String> getAllclasses()
+    {
+        List<String> classlist=new ArrayList<>();
+        //get readable database
+        SQLiteDatabase db=this.getReadableDatabase();
+        Cursor cursor=db.rawQuery("SELECT DESC_class FROM classe_table",null);
+        if(cursor.moveToFirst())
+        {
+            do {
+                classlist.add(cursor.getString(0));
+            }while (cursor.moveToNext());
+        }
+        //close the cursor
+        cursor.close();
+        //close the database
+        db.close();
+        return classlist;
+    }
+
+    //getting all subjects from database
+    public List<String> getAllmatieres()
+    {
+        List<String> matierelist=new ArrayList<>();
+        //get readable database
+        SQLiteDatabase db=this.getReadableDatabase();
+        Cursor cursor=db.rawQuery("SELECT DESC_mat FROM matiere_table",null);
+        if(cursor.moveToFirst())
+        {
+            do {
+                matierelist.add(cursor.getString(0));
+            }while (cursor.moveToNext());
+        }
+        //close the cursor
+        cursor.close();
+        //close the database
+        db.close();
+        return matierelist;
+    }
+
+
+    //insertion des seances
     public boolean insertSession(String classname,String subject,String time) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("CLASSNAME",classname);
         contentValues.put("SUBJECT",subject);
+        contentValues.put("TIME",time);
         contentValues.put("TIME",time);
         long result = db.insert(TABLE_NAME2,null ,contentValues);
         if(result == -1)
@@ -134,12 +188,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 //lire liste des etudiants dans une liste
-    public ArrayList<Student> getStudents(){
+    public ArrayList<Student> getStudents(String className){
 
         ArrayList<Student> student_list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        String[] field = {"ID","FULLNAME","STATUS"};
-        Cursor c = db.query("students_table", field, null, null, null, null, null);
+        String[] field = {"ID","FULLNAME","STATUS","CLASSE"};
+        String query="SELECT * FROM students_table WHERE CLASS ='"+className+"'";
+        Cursor c = db.rawQuery(query,null);
 
         int id = c.getColumnIndex("ID");
         int fname = c.getColumnIndex("FULLNAME");

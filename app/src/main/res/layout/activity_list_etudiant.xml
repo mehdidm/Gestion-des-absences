@@ -6,6 +6,44 @@
     android:padding="15dp"
     >
 
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="15dp">
+
+    <TextView
+        android:id="@+id/grp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Groupe :"
+        android:textSize="20dp"/>
+
+
+    <TextView
+        android:id="@+id/grpName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DSI31"
+        android:textSize="20dp"/>
+
+    <TextView
+        android:id="@+id/mat"
+        android:layout_marginLeft="60dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Matiere :"
+        android:textSize="20dp"/>
+
+
+    <TextView
+        android:id="@+id/matName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Conception"
+        android:textSize="20dp"/>
+</LinearLayout>
+
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

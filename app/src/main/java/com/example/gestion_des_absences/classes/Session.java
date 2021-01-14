@@ -7,10 +7,6 @@ public class Session {
     private String classname;
 
 
-    public Session() {
-
-    }
-
     public Session(String subject, String Time, String classname) {
         this.subject = subject;
         this.Time = Time;
