@@ -18,12 +18,15 @@ import android.widget.Toast;
 import com.example.gestion_des_absences.adapters.DatabaseHelper;
 
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 
 public class MainActivity extends Activity  {
     DatabaseHelper MyDB;
-    Intent loginIntent,intentGRP,intentMAT;
+    Intent loginIntent,intentGRP;
 Spinner groupes , seances ,matieres;
 String groupe,seance,matiere;
 Button btnDone,btnView,btnAB,btnNote;
@@ -104,10 +107,9 @@ ArrayAdapter<String> arraylist_adapter_groupes,
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
                 matiere = parent.getItemAtPosition(position).toString();
-                intentMAT= new Intent(MainActivity.this,listEtudiant.class);
-                intentMAT.putExtra("matiere" ,
+                //intentGRP= new Intent(MainActivity.this,listEtudiant.class);
+                intentGRP.putExtra("matiere" ,
                         matiere);
-
             }
 
             @Override
@@ -115,7 +117,8 @@ ArrayAdapter<String> arraylist_adapter_groupes,
                 Toast.makeText(MainActivity.this, "Nothing selected", Toast.LENGTH_SHORT).show();
             }
         });
-        AddData(groupe,matiere,seance);
+        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+        AddData(groupe,matiere,currentDate,"mehdi");
         viewAll();
         viewAbsents(matiere);
         viewNotes();
@@ -123,15 +126,14 @@ ArrayAdapter<String> arraylist_adapter_groupes,
 
 
     //choix de seance et groupe et matiere et insertion dans la table sessions_table
-        public void AddData(String groupe, String matiere, String seance) {
+        public void AddData(String groupe, String matiere, String seance,String teacher) {
             btnDone.setOnClickListener(
                     new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            boolean isInserted = MyDB.insertSession(MainActivity.this.groupe, MainActivity.this.matiere, MainActivity.this.seance);
+                            boolean isInserted = MyDB.insertSession(MainActivity.this.groupe, MainActivity.this.matiere,seance,teacher);
                             //Intent myIntent = new Intent(MainActivity.this, listEtudiant.class);
                             startActivity(intentGRP);
-                            //startActivity(intentMAT);
 //                            myIntent.putExtra("Subject",MainActivity.this.matiere);
 //                            MainActivity.this.startActivity(myIntent);
                             if (isInserted == true)

@@ -101,13 +101,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     //insertion des seances
-    public boolean insertSession(String classname,String subject,String time) {
+    public boolean insertSession(String classname,String subject,String time,String teacher) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("CLASSNAME",classname);
         contentValues.put("SUBJECT",subject);
         contentValues.put("TIME",time);
-        contentValues.put("TIME",time);
+        contentValues.put("TEACHER",teacher);
         long result = db.insert(TABLE_NAME2,null ,contentValues);
         if(result == -1)
             return false;
