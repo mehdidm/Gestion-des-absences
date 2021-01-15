@@ -1,6 +1,7 @@
 package com.example.gestion_des_absences.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,18 +18,20 @@ import com.example.gestion_des_absences.R;
 import com.example.gestion_des_absences.classes.Student;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class StudentAdapter extends ArrayAdapter<Student> {
     Context context;
     int resource;
     public StudentAdapter(@NonNull Context context, int resource, @NonNull ArrayList<Student> ListView) {
-        super(context,
-                resource,
-                ListView);
+        super(context, resource, ListView);
         this.context=context;
         this.resource=resource;
     }
+
+
+
 
     @NonNull
     @Override
@@ -59,7 +62,7 @@ DatabaseHelper MyDB;
                     }else if(! isChecked&& Ds.getText().toString().matches("")&&Ex.getText().toString().matches("")){
 //
                     MyDB.updateData(currentStudent.getCIN(),"absent");
-                    MyDB.insertHistoryStudents(currentStudent.getFullname(),"dev mobile");
+                    MyDB.insertHistoryStudents(currentStudent.getFullname(),"conception");
 
                 }
 

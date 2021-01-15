@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.gestion_des_absences.adapters.DatabaseHelper;
+import com.example.gestion_des_absences.adapters.StudentAdapter;
 
 
 import java.text.SimpleDateFormat;
@@ -26,7 +27,7 @@ import java.util.Locale;
 
 public class MainActivity extends Activity  {
     DatabaseHelper MyDB;
-    Intent loginIntent,intentGRP;
+    Intent loginIntent,intentGRP,adapterIntent;
 Spinner groupes , seances ,matieres;
 String groupe,seance,matiere;
 Button btnDone,btnView,btnAB,btnNote;
@@ -44,18 +45,14 @@ ArrayAdapter<String> arraylist_adapter_groupes,
         groupes = (Spinner) findViewById(R.id.Groupes);
         btnDone= findViewById(R.id.btnDone);
         btnView=findViewById(R.id.btnView);
-        btnAB=findViewById(R.id.btnE);
-        btnNote=findViewById(R.id.btn_notes);
+//        btnAB=findViewById(R.id.btnE);
+//        btnNote=findViewById(R.id.btn_notes);
         MyDB = new DatabaseHelper(this);
         loginIntent=getIntent();
         Tname=findViewById(R.id.name);
         Tname.setText(loginIntent.getStringExtra("username"));
         arraylist_Groupes = new ArrayList<>();
-//        arraylist_Groupes.add("Dsi31");
-//        arraylist_Groupes.add("DSi32");
-//        arraylist_Groupes.add("Sem31");
-//        arraylist_adapter_groupes = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, arraylist_Groupes);
-//        groupes.setAdapter(arraylist_adapter_groupes);
+
         prepareDataGRoupes();
         groupes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -74,26 +71,6 @@ ArrayAdapter<String> arraylist_adapter_groupes,
         });
 
 
-        seances = (Spinner) findViewById(R.id.Seances);
-        arraylist_Seances = new ArrayList<>();
-//        arraylist_Seances.add("S1");
-//        arraylist_Seances.add("S2");
-//        arraylist_Seances.add("S3");
-        arraylist_adapter_seances = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, arraylist_Seances);
-        seances.setAdapter(arraylist_adapter_seances);
-
-        seances.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
-                 seance = parent.getItemAtPosition(position).toString();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                Toast.makeText(MainActivity.this, "Nothing selected", Toast.LENGTH_SHORT).show();
-            }
-        });
-
 
         matieres = (Spinner) findViewById(R.id.Matieres);
         arraylist_Matieres = new ArrayList<>();
@@ -107,7 +84,8 @@ ArrayAdapter<String> arraylist_adapter_groupes,
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
                 matiere = parent.getItemAtPosition(position).toString();
-                //intentGRP= new Intent(MainActivity.this,listEtudiant.class);
+                adapterIntent = new Intent(MainActivity.this, StudentAdapter.class);
+                adapterIntent.putExtra("matiere",matiere);
                 intentGRP.putExtra("matiere" ,
                         matiere);
             }
@@ -118,10 +96,10 @@ ArrayAdapter<String> arraylist_adapter_groupes,
             }
         });
         String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-        AddData(groupe,matiere,currentDate,"mehdi");
+        AddData(groupe,matiere,currentDate,loginIntent.getStringExtra("username"));
         viewAll();
-        viewAbsents(matiere);
-        viewNotes();
+//        viewAbsents(matiere);
+//        viewNotes();
     }
 
 
@@ -132,7 +110,6 @@ ArrayAdapter<String> arraylist_adapter_groupes,
                         @Override
                         public void onClick(View v) {
                             boolean isInserted = MyDB.insertSession(MainActivity.this.groupe, MainActivity.this.matiere,seance,teacher);
-                            //Intent myIntent = new Intent(MainActivity.this, listEtudiant.class);
                             startActivity(intentGRP);
 //                            myIntent.putExtra("Subject",MainActivity.this.matiere);
 //                            MainActivity.this.startActivity(myIntent);
@@ -152,7 +129,8 @@ ArrayAdapter<String> arraylist_adapter_groupes,
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Cursor res = MyDB.getAllData("sessions_table");
+                        //Cursor res = MyDB.getAllData("enseignement_table");
+                        Cursor res = MyDB.getTeacherSessions(loginIntent.getStringExtra("username"));
 
                         if (res.getCount() == 0) {
                             // show message
@@ -164,7 +142,7 @@ ArrayAdapter<String> arraylist_adapter_groupes,
                         while (res.moveToNext()) {
                             buffer.append("Groupe :" + res.getString(1) + "\n");
                             buffer.append("Matiere :" + res.getString(2) + "\n");
-                            buffer.append("Seance :" + res.getString(3) + "\n");
+                            buffer.append("Date :" + res.getString(3) + "\n");
 
                         }
 
@@ -175,61 +153,61 @@ ArrayAdapter<String> arraylist_adapter_groupes,
         );
     }
 //affichage de table notes_table
-    public void viewNotes() {
-        btnNote.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Cursor res = MyDB.getAllData("Notes_table");
-
-                        if (res.getCount() == 0) {
-                            // show message
-                            showMessage("Error", "Nothing found");
-                            return;
-                        }
-
-                        StringBuffer buffer = new StringBuffer();
-                        while (res.moveToNext()) {
-                            buffer.append("student name :" + res.getString(4) + "\n");
-                            buffer.append("Matiere :" + res.getString(2) + "\n");
-                            buffer.append("note Ds :" + res.getString(1) + "\n");
-                            buffer.append("note Examen :" + res.getString(3) + "\n");
-                            buffer.append("moyenne generale :" + res.getString(5)+ "\n");
-
-                        }
-
-                        // Show all data
-                        showMessage("Notes", buffer.toString());
-                    }
-                }
-        );
-
-    }
+//    public void viewNotes() {
+//        btnNote.setOnClickListener(
+//                new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        Cursor res = MyDB.getNotes(matiere);
+//
+//                        if (res.getCount() == 0) {
+//                            // show message
+//                            showMessage("Error", "Nothing found");
+//                            return;
+//                        }
+//
+//                        StringBuffer buffer = new StringBuffer();
+//                        while (res.moveToNext()) {
+//                            buffer.append("student name :" + res.getString(4) + "\n");
+//                            buffer.append("Matiere :" + res.getString(2) + "\n");
+//                            buffer.append("note Ds :" + res.getString(1) + "\n");
+//                            buffer.append("note Examen :" + res.getString(3) + "\n");
+//                            buffer.append("moyenne generale :" + res.getString(5)+ "\n");
+//
+//                        }
+//
+//                        // Show all data
+//                        showMessage("Notes", buffer.toString());
+//                    }
+//                }
+//        );
+//
+//    }
     //affichage des liste des absences et nombre des absences de chaque matiere choisi
-    public void viewAbsents(String subject) {
-        btnAB.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Cursor res = MyDB.getEliminations(subject);
-                        if (res.getCount() == 0) {
-                            // show message
-                            showMessage("Error", "Nothing found");
-                            return;
-                        }
-
-                        StringBuffer buffer = new StringBuffer();
-                        while (res.moveToNext()) {
-                            buffer.append("student name :" + res.getString(0) + "\n");
-                            buffer.append("nombre absences :" + res.getString(1) + "\n");
-                        }
-
-                        // Show all data
-                        showMessage("Liste absences", buffer.toString());
-                    }
-                }
-        );
-    }
+//    public void viewAbsents(String matiere) {
+//        btnAB.setOnClickListener(
+//                new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        Cursor res = MyDB.getEliminations(matiere);
+//                        if (res.getCount() == 0) {
+//                            // show message
+//                            showMessage("Error", "Nothing found");
+//                            return;
+//                        }
+//
+//                        StringBuffer buffer = new StringBuffer();
+//                        while (res.moveToNext()) {
+//                            buffer.append("student name :" + res.getString(0) + "\n");
+//                            buffer.append("nombre absences :" + res.getString(1) + "\n");
+//                        }
+//
+//                        // Show all data
+//                        showMessage("Liste absences", buffer.toString());
+//                    }
+//                }
+//        );
+//    }
 
 //fonction d'affichage de pop up
     public void showMessage(String title, String Message) {
@@ -258,20 +236,7 @@ ArrayAdapter<String> arraylist_adapter_groupes,
         matieres.setAdapter(arraylist_adapter_matieres);
 
     }
-//    public void getAbsences(){
-//        btnAB.setOnClickListener(
-//                new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        //MyDB.getAbsences();
-//                        Intent myIntent = new Intent(MainActivity.this, history.class);
-//                        myIntent.putExtra("Subject",MainActivity.this.matiere);
-//                        MainActivity.this.startActivity(myIntent);
-//                    }
-//                }
-//        );
-//
-//    }
+
 
 
 }

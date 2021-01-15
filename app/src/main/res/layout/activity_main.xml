@@ -10,7 +10,8 @@ tools:context=".MainActivity"
     android:padding="20dp">
 <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="20dp">
 
     <TextView
         android:layout_width="wrap_content"
@@ -56,18 +57,6 @@ tools:context=".MainActivity"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"/>
 
-    <TextView
-        android:id="@+id/textS"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Seances "
-        android:textSize="20dp"
-        android:layout_marginTop="50dp"/>
-    <Spinner
-        android:id="@+id/Seances"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"/>
 
     <Button
         android:id="@+id/btnDone"
@@ -91,7 +80,7 @@ tools:context=".MainActivity"
 
         />
 
-    <Button
+  <!--  <Button
         android:id="@+id/btnE"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -110,7 +99,7 @@ tools:context=".MainActivity"
     android:gravity="center"
     android:textColor="@color/white"
     android:backgroundTint="#2900ff"
-    android:text="Liste des notes"/>
+    android:text="Liste des notes"/>-->
 
 
 </LinearLayout>

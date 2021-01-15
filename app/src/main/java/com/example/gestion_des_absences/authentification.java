@@ -10,44 +10,42 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.gestion_des_absences.adapters.DatabaseHelper;
-import com.example.gestion_des_absences.ui.login.LoginActivity;
 
 public class authentification extends AppCompatActivity {
 
-    EditText userName,password;
-    Button btnSubmit;
-    DatabaseHelper MyDB;
 
+
+    Button btnLogin;
+    EditText edtUsername;
+    EditText edtPassword;
+    DatabaseHelper MyDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authentification);
 
+        btnLogin = (Button) findViewById(R.id.btnLogin);
+        edtUsername = (EditText) findViewById(R.id.edtUsername);
+        edtPassword = (EditText) findViewById(R.id.edtPassword);
+
         MyDB = new DatabaseHelper(this);
 
-        userName=findViewById(R.id.username);
-        password=findViewById(R.id.password);
-        btnSubmit=findViewById(R.id.login);
-
-
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
+        btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                boolean isExist = MyDB.checkUserExist(userName.getText().toString(), password.getText().toString());
+                boolean isExist = MyDB.checkUserExist(edtUsername.getText().toString(), edtPassword.getText().toString());
 
                 if(isExist){
                     Intent intent = new Intent(authentification.this, MainActivity.class);
-                    intent.putExtra("username", userName.getText().toString());
+                    intent.putExtra("username", edtUsername.getText().toString());
                     startActivity(intent);
                 } else {
-                    password.setText(null);
+                    edtPassword.setText(null);
                     Toast.makeText(authentification.this, "Login failed. Invalid username or password.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
 
 
     }

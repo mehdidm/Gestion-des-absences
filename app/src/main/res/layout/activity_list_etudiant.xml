@@ -85,14 +85,34 @@
     <ListView
         android:id="@+id/etudiantList"
         android:layout_width="fill_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:divider="@color/material_blue_grey_800"
         android:dividerHeight="1dp"
         android:footerDividersEnabled="false">
 
     </ListView>
 
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="liste absence"
+        android:layout_marginTop="25dp"
+        android:backgroundTint="#2900ff"
+        android:id="@+id/absence"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="70dp"
+        android:text="Liste Notes"
+        android:layout_marginTop="25dp"
+        android:backgroundTint="#2900ff"
+        android:id="@+id/note"/>
+</LinearLayout>
 
 
 </LinearLayout>

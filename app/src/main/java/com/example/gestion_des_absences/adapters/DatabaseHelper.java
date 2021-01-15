@@ -168,12 +168,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+   
+
 
 
 //lire les donnees de la base en passant le nom de table en parametre
-    public Cursor getAllData(String TABLE_NAME) {
+//    public Cursor getAllData(String TABLE_NAME) {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        Cursor res = db.rawQuery("select * from "+TABLE_NAME,null);
+//        return res;
+//    }
+
+    public Cursor getTeacherSessions(String enseignant) {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor res = db.rawQuery("select * from "+TABLE_NAME,null);
+        Cursor res = db.rawQuery("select * from enseignement_table where TEACHER ='"+enseignant+"'",null);
+        return res;
+    }
+
+    public Cursor getNotes(String subject) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("select * from Notes_table where SUBJECT = '"+subject+"'",null);
         return res;
     }
 
@@ -181,8 +195,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor getEliminations(String subject){
         SQLiteDatabase db = this.getWritableDatabase();
-        String query= "SELECT STUDENTNAME,COUNT(*) FROM history_table WHERE SUBJECT == "
-                +" +subject "+" GROUP BY STUDENTNAME ORDER BY 2 Desc";
+        String query= "SELECT STUDENTNAME,COUNT(*) FROM history_table WHERE SUBJECT = '"
+                +subject+"' "+" GROUP BY STUDENTNAME ORDER BY 2 Desc";
         Cursor res = db.rawQuery(query,null);
         return res;
     }
